@@ -1,8 +1,8 @@
+use crate::http::api::*;
 use crate::setting::settings::Settings;
 use axum::http::{StatusCode, Uri};
 use axum::Router;
 use tokio::net::TcpListener;
-use crate::http::api::*;
 
 mod http;
 mod repository;
@@ -12,8 +12,10 @@ mod setting;
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let settings = Settings::new("config.yaml")?;
+    println!("Settings:\n{}", settings.json_pretty());
 
     let address = &format!("{}:{}", settings.server.host, settings.server.port);
+    println!("Server listening on {}", address);
 
     let listener = TcpListener::bind(address).await?;
 
